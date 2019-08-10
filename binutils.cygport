@@ -1,0 +1,37 @@
+TOOLCHAIN_TARGET="native"
+GIT_URI="git://sourceware.org/git/binutils-gdb.git"
+inherit toolchain git
+GIT_REV=be46fa23042ec88a7a42030476a301bf72a80e7e
+SRC_DIR=binutils-gdb
+
+NAME="binutils"
+VERSION=2.31.1
+RELEASE=1
+CATEGORY="Devel"
+SUMMARY="GNU assembler, linker, and similar utilities"
+DESCRIPTION="This directory contains various GNU compilers, assemblers, linkers,
+debuggers, etc., plus their support routines, definitions, and documentation."
+HOMEPAGE="http://www.gnu.org/software/binutils/"
+
+# gdb,etc.: https://sourceware.org/ml/binutils/2014-01/msg00341.html
+# for shared libbfd/libopcodes, add:
+#	--enable-shared
+CYGCONF_ARGS="
+	--enable-install-libiberty
+	--disable-gdb
+	--disable-libdecnumber
+	--disable-readline
+	--disable-sim
+	--enable-64-bit-bfd
+"
+# --enable-targets=i686-efi-pe,x86_64-efi-pe,ia64-efi-elf,x86_64-pc-cygwin,i686-pc-cygwin
+
+src_install() {
+	cd ${B}
+	cyginstall
+
+	# for shared libbfd/libopcodes, add:
+	# APIs are unstable, do not allow linking against DLLs
+#	rm -f ${D}/usr/lib/*.dll.a
+#	sed -i -e '/^library_names=/d' ${D}/usr/lib/lib*.la
+}
