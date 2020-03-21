@@ -1,11 +1,11 @@
 TOOLCHAIN_TARGET="native"
 GIT_URI="git://sourceware.org/git/binutils-gdb.git"
 inherit toolchain git
-GIT_REV=9ac06b967fdaac7991591fdb89357da173b2f095
+GIT_REV=de9c1b7cfe6e57ea8b677dc2de06e83de50f47c2
 SRC_DIR=binutils-gdb
 
 NAME="binutils"
-VERSION=2.34
+VERSION=2.34+1git.de9c1b7cfe
 RELEASE=1
 CATEGORY="Devel"
 SUMMARY="GNU assembler, linker, and similar utilities"
