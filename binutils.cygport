@@ -1,12 +1,12 @@
 TOOLCHAIN_TARGET="native"
 GIT_URI="git://sourceware.org/git/binutils-gdb.git"
 inherit toolchain git
-GIT_REV=de9c1b7cfe6e57ea8b677dc2de06e83de50f47c2
+GIT_REV=9ac06b967fdaac7991591fdb89357da173b2f095
 SRC_DIR=binutils-gdb
 
 NAME="binutils"
-VERSION=2.34+1git.de9c1b7cfe
-RELEASE=1
+VERSION=2.34
+RELEASE=3
 CATEGORY="Devel"
 SUMMARY="GNU assembler, linker, and similar utilities"
 DESCRIPTION="This directory contains various GNU compilers, assemblers, linkers,
@@ -23,9 +23,17 @@ CYGCONF_ARGS="
 	--disable-readline
 	--disable-sim
 	--enable-64-bit-bfd
-        --enable-targets=all
+        --enable-targets=x86_64-pc-cygwin,i686-pc-cygwin,i686-efi-pe,x86_64-efi-pe,ia64-efi-elf,i686-pc-linux-gnu,x86_64-pc-linux-gnu
+	--with-system-zlib
 "
+# --enable-targets=all --enable-shared lt_cv_deplibs_check_method=pass_all
 # --enable-targets=i686-efi-pe,x86_64-efi-pe,ia64-efi-elf,x86_64-pc-cygwin,i686-pc-cygwin
+
+PATCH_URI="
+binutils-gdb.git-40bfb9762747f8336b17c70a0173d10200fa62eb.patch
+binutils-gdb.git-82f439d028c65663a0baf0a17ef5c4a2ea5c84a7.patch
+2.34+1-shared-libs.patch
+"
 
 src_install() {
 	cd ${B}
@@ -33,6 +41,6 @@ src_install() {
 
 	# for shared libbfd/libopcodes, add:
 	# APIs are unstable, do not allow linking against DLLs
-#	rm -f ${D}/usr/lib/*.dll.a
-#	sed -i -e '/^library_names=/d' ${D}/usr/lib/lib*.la
+	rm -f ${D}/usr/lib/*.dll.a
+	sed -i -e '/^library_names=/d' ${D}/usr/lib/lib*.la
 }
