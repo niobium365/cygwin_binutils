@@ -1,6 +1,6 @@
---- origsrc/binutils-gdb/bfd/configure.ac	2020-03-15 02:15:41.000000000 +0100
-+++ bfd/configure.ac	2020-03-23 07:38:04.299450100 +0100
-@@ -302,8 +302,8 @@ changequote([,])dnl
+--- origsrc/binutils-2.35.1/bfd/configure.ac
++++ src/binutils-2.35.1/bfd/configure.ac
+@@ -320,8 +320,8 @@ changequote([,])dnl
    case "${host}" in
    # More hacks to build DLLs on Windows.
    *-*-cygwin*)
@@ -11,8 +11,8 @@
    ;;
  
    # Use built-in libintl on macOS, since it is not provided by libc.
---- origsrc/binutils-gdb/opcodes/configure.ac	2020-03-15 02:19:03.000000000 +0100
-+++ opcodes/configure.ac	2020-03-23 07:40:34.539335700 +0100
+--- origsrc/binutils-2.35.1/opcodes/configure.ac
++++ src/binutils-2.35.1/opcodes/configure.ac
 @@ -175,8 +175,8 @@ changequote([,])dnl
  
    case "${host}" in
@@ -24,9 +24,9 @@
        ;;
     *-*-darwin*)
       SHARED_LIBADD="-Wl,`pwd`/../bfd/.libs/libbfd.dylib ${SHARED_LIBADD}"
---- origsrc/binutils-gdb/bfd/configure	2020-03-15 02:15:41.000000000 +0100
-+++ bfd/configure	2020-03-29 06:06:37.748775200 +0200
-@@ -14570,8 +14570,9 @@ if test "$enable_shared" = "yes"; then
+--- origsrc/binutils-2.35.1/bfd/configure
++++ src/binutils-2.35.1/bfd/configure
+@@ -14584,8 +14584,9 @@ if test "$enable_shared" = "yes"; then
    case "${host}" in
    # More hacks to build DLLs on Windows.
    *-*-cygwin*)
@@ -38,8 +38,8 @@
    ;;
  
    # Use built-in libintl on macOS, since it is not provided by libc.
---- origsrc/binutils-gdb/opcodes/configure	2020-03-15 02:19:03.000000000 +0100
-+++ opcodes/configure	2020-03-29 06:07:33.159680000 +0200
+--- origsrc/binutils-2.35.1/opcodes/configure
++++ src/binutils-2.35.1/opcodes/configure
 @@ -12784,8 +12784,9 @@ if test "$enable_shared" = "yes"; then
  
    case "${host}" in

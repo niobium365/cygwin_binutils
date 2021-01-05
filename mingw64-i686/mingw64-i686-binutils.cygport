@@ -1,0 +1,63 @@
+# -*- mode: sh; sh-shell: bash -*-
+ORIG_PN="binutils"
+TOOLCHAIN_TARGET="i686-w64-mingw32"
+inherit toolchain
+NAME="mingw64-i686-binutils"
+VERSION="2.35.1"
+RELEASE="1"
+CATEGORY="Devel"
+SUMMARY="GNU assembler, linker, and similar utilities for MinGW-w64 Win32 toolchain"
+DESCRIPTION="This directory contains various GNU compilers, assemblers, linkers,
+debuggers, etc., plus their support routines, definitions, and documentation."
+HOMEPAGE="http://www.gnu.org/software/binutils/"
+
+if [[ ${PV} = *git* ]] ; then
+    GIT_URI="git://sourceware.org/git/binutils-gdb.git"
+    inherit git
+    #GIT_REV=9ac06b967fdaac7991591fdb89357da173b2f095
+    GIT_TAG="binutils-2_35_1"
+    SRC_DIR=binutils-gdb
+else
+    mirror_sourceware=" https://mirrors.kernel.org/sourceware/"
+    SRC_URI="
+      mirror://sourceware/${PN}/releases/${ORIG_PN}-${PV}.tar.xz
+      mirror://sourceware/${PN}/releases/${ORIG_PN}-${PV}.tar.xz.sig
+    "
+fi
+PATCH_URI="
+  ../${ORIG_PN}-${PV}-cygwin-config-rpath.patch
+"
+
+# Avoid strange failures
+#MAKEOPTS=-j1
+# gdb,etc.: https://sourceware.org/ml/binutils/2014-01/msg00341.html
+BINUTILS_NO_GDB="
+  --disable-gdb
+  --disable-libdecnumber
+  --disable-readline
+  --disable-sim
+"
+CYGCONF_ARGS="
+  ${BINUTILS_NO_GDB}
+  --enable-64-bit-bfd
+  --enable-targets=x86_64-pep
+  --with-system-zlib
+  --with-gcc-major-version-only
+"
+
+src_install() {
+	cd ${B}
+	gdbserver_build_enabled=yes cyginstall
+	# conflicts with native binutils
+	rm -fr ${D}/usr/lib/ ${D}/usr/share/{info,locale}/
+	rm -rf ${D}/usr/share/man/man1/gdb*
+	rm -rf ${D}/usr/share/man/man5/gdb*
+}
+
+src_test() {
+    cd ${B}
+    # windres test causes an expect infloop after results are output
+    DEJAGNU=/dev/null \
+    RUNTESTFLAGS="--ignore windres.exp" \
+        cygtest
+}
