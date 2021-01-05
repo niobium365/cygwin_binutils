@@ -1,0 +1,54 @@
+--- origsrc/binutils-gdb/bfd/configure.ac	2020-03-15 02:15:41.000000000 +0100
++++ bfd/configure.ac	2020-03-23 07:38:04.299450100 +0100
+@@ -302,8 +302,8 @@ changequote([,])dnl
+   case "${host}" in
+   # More hacks to build DLLs on Windows.
+   *-*-cygwin*)
+-    SHARED_LDFLAGS="-no-undefined"
+-    SHARED_LIBADD="-L`pwd`/../libiberty -liberty -L`pwd`/../intl -lintl -lcygwin -lkernel32"
++    SHARED_LDFLAGS="-no-undefined -Wl,--exclude-libs=libiberty.a"
++    SHARED_LIBADD="-Wl,`pwd`/../libiberty/libiberty.a -L`pwd`/../intl -lintl -lcygwin -lkernel32"
+   ;;
+ 
+   # Use built-in libintl on macOS, since it is not provided by libc.
+--- origsrc/binutils-gdb/opcodes/configure.ac	2020-03-15 02:19:03.000000000 +0100
++++ opcodes/configure.ac	2020-03-23 07:40:34.539335700 +0100
+@@ -175,8 +175,8 @@ changequote([,])dnl
+ 
+   case "${host}" in
+     *-*-cygwin*)
+-      SHARED_LDFLAGS="-no-undefined"
+-      SHARED_LIBADD="-L`pwd`/../bfd -lbfd -L`pwd`/../libiberty -liberty -L`pwd`/../intl -lintl -lcygwin"
++      SHARED_LDFLAGS="-no-undefined -Wl,--exclude-libs=libiberty.a"
++      SHARED_LIBADD="`pwd`/../bfd/libbfd.la -Wl,`pwd`/../libiberty/libiberty.a -L`pwd`/../intl -lintl -lcygwin"
+       ;;
+    *-*-darwin*)
+      SHARED_LIBADD="-Wl,`pwd`/../bfd/.libs/libbfd.dylib ${SHARED_LIBADD}"
+--- origsrc/binutils-gdb/bfd/configure	2020-03-15 02:15:41.000000000 +0100
++++ bfd/configure	2020-03-29 06:06:37.748775200 +0200
+@@ -14570,8 +14570,9 @@ if test "$enable_shared" = "yes"; then
+   case "${host}" in
+   # More hacks to build DLLs on Windows.
+   *-*-cygwin*)
+-    SHARED_LDFLAGS="-no-undefined"
+-    SHARED_LIBADD="-L`pwd`/../libiberty -liberty -L`pwd`/../intl -lintl -lcygwin -lkernel32"
++    SHARED_LDFLAGS="-no-undefined -Wl,--exclude-libs=libiberty.a"
++    SHARED_LIBADD="-Wl,`pwd`/../libiberty/libiberty.a -L`pwd`/../intl -lintl -lcygwin -lkernel32"
++
+   ;;
+ 
+   # Use built-in libintl on macOS, since it is not provided by libc.
+--- origsrc/binutils-gdb/opcodes/configure	2020-03-15 02:19:03.000000000 +0100
++++ opcodes/configure	2020-03-29 06:07:33.159680000 +0200
+@@ -12784,8 +12784,9 @@ if test "$enable_shared" = "yes"; then
+ 
+   case "${host}" in
+     *-*-cygwin*)
+-      SHARED_LDFLAGS="-no-undefined"
+-      SHARED_LIBADD="-L`pwd`/../bfd -lbfd -L`pwd`/../libiberty -liberty -L`pwd`/../intl -lintl -lcygwin"
++      SHARED_LDFLAGS="-no-undefined -Wl,--exclude-libs=libiberty.a"
++      SHARED_LIBADD="`pwd`/../bfd/libbfd.la -Wl,`pwd`/../libiberty/libiberty.a -L`pwd`/../intl -lintl -lcygwin"
++
+       ;;
+    *-*-darwin*)
+      SHARED_LIBADD="-Wl,`pwd`/../bfd/.libs/libbfd.dylib ${SHARED_LIBADD}"
