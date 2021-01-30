@@ -3,7 +3,7 @@ ORIG_PN="binutils"
 TOOLCHAIN_TARGET="i686-w64-mingw32"
 inherit toolchain
 NAME="mingw64-i686-binutils"
-VERSION="2.35.1"
+VERSION="2.35.2"
 RELEASE="1"
 CATEGORY="Devel"
 SUMMARY="GNU assembler, linker, and similar utilities for MinGW-w64 Win32 toolchain"
