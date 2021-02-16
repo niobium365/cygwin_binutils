@@ -12,12 +12,17 @@ DESCRIPTION="This directory contains various GNU compilers, assemblers, linkers,
 debuggers, etc., plus their support routines, definitions, and documentation."
 HOMEPAGE="http://www.gnu.org/software/binutils/"
 
-if [[ ${PV} = *git* ]] ; then
-    GIT_URI="git://sourceware.org/git/binutils-gdb.git"
+if [[  ${PV} = *gi2t* ]] ; then
+    GIT_URI="https://gitee.com/niobium/binutils.git"
     inherit git
-    #GIT_REV=9ac06b967fdaac7991591fdb89357da173b2f095
-    GIT_TAG="binutils-2_35_1"
-    SRC_DIR=binutils-gdb
+    #GIT_REV=5d41860df24c3b9c82421636adb0aa1418fe12925d41860d
+    #GIT_TAG="binutils-2_35_1"
+    GIT_BRANCH=cyg_enh
+    SRC_DIR=binutils
+    SRC_URI="
+      mirror://sourceware/${PN}/releases/${P}.tar.xz
+      mirror://sourceware/${PN}/releases/${P}.tar.xz.sig
+    "
 else
     mirror_sourceware=" https://mirrors.kernel.org/sourceware/"
     SRC_URI="
@@ -39,6 +44,8 @@ BINUTILS_NO_GDB="
 CYGCONF_ARGS="
   ${BINUTILS_NO_GDB}
   --enable-64-bit-bfd
+  CFLAGS='-pg -Ofast -funroll-loops -msse2 -mavx -ggdb -pipe -Wall -Werror=format-security'
+  LIBS='-lstdc++'
   --enable-install-libiberty
   --enable-targets=x86_64-pep
   --with-system-zlib
